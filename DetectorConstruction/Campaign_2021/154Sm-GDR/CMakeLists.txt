@@ -15,3 +15,4 @@ configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/DetectorConstructionConfig.configure_file.hh"
   "${CMAKE_CURRENT_LIST_DIR}/DetectorConstructionConfig.hh"
 )
+

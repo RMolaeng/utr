@@ -87,6 +87,7 @@ array<DetectorPosition, 4> labr_positions{
     DetectorPosition{"labr_L3_Sci_02", 135. * degree, 321.43 * degree, 8.7 * cm, 0, filterCuThickThickness, 2 * filterPbThickThickness, G4ThreeVector(-4. * mm, 0, 0)},
     DetectorPosition{"labr_L5_Sci_03", 90. * degree, 180. * degree, 5.0 * cm , 0, filterCuThickThickness, 2 * filterPbThickThickness, G4ThreeVector(0, -4. * mm, 0)},
     DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 7.5 * cm, 0, 2 * filterCuThickThickness, 2 * filterPbThickThickness, G4ThreeVector(0, 0, 0)},
+    //DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 1. * inch + 40.0 * mm, 0, 2 * filterCuThickThickness, 2 * filterPbThickThickness, G4ThreeVector(0, 0, 0)},
 };
 
 
@@ -351,7 +352,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   auto *collimatorRoomFirstLeadWallSolidHole = new G4Tubs("collimatorRoomFirstLeadWallSolidHole", 0., collimatorRoomFirstLeadWallHoleAperture / 2., collimatorRoomFirstLeadWallLength / 2. + subtractionSolidBuffer, 0., twopi);
   auto *collimatorRoomFirstLeadWallSolid = new G4SubtractionSolid("collimatorRoomFirstLeadWallSolid", collimatorRoomFirstLeadWallSolidBox, collimatorRoomFirstLeadWallSolidHole);
   auto *collimatorRoomFirstLeadWallLogical = new G4LogicalVolume(collimatorRoomFirstLeadWallSolid, nist->FindOrBuildMaterial("G4_Pb"), "collimatorRoomFirstLeadWallLogical");
-  new G4PVPlacement(nullptr, G4ThreeVector(0, 0, -(collimatorRoomFirstLeadWallToTargetPos + collimatorRoomFirstLeadWallLength / 2.)), collimatorRoomFirstLeadWallLogical, "collimatorRoomFirstLeadWall", worldLogical, false, 0);
+  new G4PVPlacement(nuworldLogicalllptr, G4ThreeVector(0, 0, -(collimatorRoomFirstLeadWallToTargetPos + collimatorRoomFirstLeadWallLength / 2.)), collimatorRoomFirstLeadWallLogical, "collimatorRoomFirstLeadWall", worldLogical, false, 0);
   collimatorRoomFirstLeadWallLogical->SetVisAttributes(green);
 
   auto *collimatorRoomSecondLeadWallSolidBox = new G4Box("collimatorRoomSecondLeadWallSolidBox", collimatorRoomSecondLeadWallWidth / 2., collimatorRoomSecondLeadWallHeight / 2., collimatorRoomSecondLeadWallLength / 2.);

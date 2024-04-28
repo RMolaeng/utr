@@ -19,10 +19,10 @@ add_executable(
     GetHistogram.cpp
 )
 
-add_executable(
-    getHistogram-Eventwise
-    GetHistogram-Eventwise.cpp
-)
+#add_executable(
+#    getHistogram-Eventwise
+#    GetHistogram-Eventwise.cpp
+#)
 
 add_executable(
     getSolidAngleCoverage
@@ -59,14 +59,17 @@ target_link_libraries(
     ROOT::TreePlayer
     ROOT::Hist)
 
-target_link_libraries(
-    getHistogram-Eventwise
-    PUBLIC
-    Threads::Threads
-    ROOT::Core
-    ROOT::Tree
-    ROOT::Hist
-    ROOT::ROOTDataFrame)
+#target_link_libraries(
+#    getHistogram-Eventwise
+#    PUBLIC
+#    Threads::Threads
+#    ROOT::Core
+#    ROOT::Tree
+#    ROOT::Hist
+#    #ROOT::ROOTDataFrame
+#   /home/refilwemolaeng/Software/root/v6-20-00_Binaries/lib/libROOTDataFrame.so
+#   /home/refilwemolaeng/Software/root/v6-20-00_Binaries/lib/libTreePlayer.so)
+
 
 target_link_libraries(
     getSolidAngleCoverage
@@ -116,7 +119,7 @@ set(common_compile_options
 )
 
 target_compile_options(getHistogram PRIVATE ${common_compile_options})
-target_compile_options(getHistogram-Eventwise PRIVATE ${common_compile_options})
+#target_compile_options(getHistogram-Eventwise PRIVATE ${common_compile_options})
 target_compile_options(getSolidAngleCoverage PRIVATE ${common_compile_options})
 target_compile_options(histogramToTxt PRIVATE ${common_compile_options})
 target_compile_options(mergeFiles PRIVATE ${common_compile_options})

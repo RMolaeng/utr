@@ -10,7 +10,8 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 # Finding ROOT
-find_package(ROOT 6.20 CONFIG REQUIRED)
+ find_package(ROOT 6.20 CONFIG REQUIRED)
+
 
 # Adding an executable program
 add_executable(

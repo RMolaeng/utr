@@ -83,28 +83,28 @@ const auto filterPbThinThickness = 1.158 * mm; // Aka 1mm Pb filter
 const auto filterPbThickThickness = 2.562 * mm; // Aka 2.5mm Pb filter*/
 
 array<DetectorPosition, 4> labr_positions{
-    DetectorPosition{"labr_L1_Sci_01", 135. * degree, 218.57 * degree, 8.2* cm, 0, 2.06*mm, 2.55*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"labr_L3_Sci_02", 135. * degree, 321.43 * degree, 8.2* cm, 0, 2.03*mm,  2.58*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"labr_L5_Sci_03", 90. * degree, 180. * degree, 4.3 * cm , 0, 2.03*mm, 2.51*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 5.1 * cm , 0, 2.03*mm,  2.51*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"labr_L1_Sci_01", 135. * degree, 218.57 * degree, 8.5* cm, 0, 2.06*mm, 2.55*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"labr_L3_Sci_02", 135. * degree, 321.43 * degree, 8.5* cm, 0, 2.03*mm,  2.58*mm, G4ThreeVector(0, 0, 0)},//check if the same problem is here
+    DetectorPosition{"labr_L5_Sci_03", 90. * degree, 180. * degree, 7.5 * cm , 0, 2.03*mm, 2.51*mm, G4ThreeVector(0, 0, 0)},//looks like there is a coordinate system issue here
+    DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 8.5 * cm , 0, 2.03*mm,  2.51*mm, G4ThreeVector(0, 0, 0)},
     //DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 1. * inch + 40.0 * mm, 0, 2 * filterCuThickThickness, 2 * filterPbThickThickness, G4ThreeVector(0, 0, 0)},
 };
 
 
 array<DetectorPosition, 5> clover_positions{
-    DetectorPosition{"clover_B1_CUp_1", 90. * degree, 0. * degree, 10.2 * cm, 270. * degree, 2.05*mm, 2.48*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"clover_B2_CUp_2", 90. * degree, 90. * degree, 10.3 * cm, 270. * degree, 2.05*mm, 2.56*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"clover_B4_CUp_3", 125.26 * degree, 45. * degree, 13.5 * cm, 90. * degree, 2.07*mm,  2.57*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"clover_B5_CUp_4", 135. * degree, 90. * degree, 21. * cm, 90. * degree,  2.05*mm,  2.61*mm, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"clover_B6_CDown_1", 125.26 * degree, 135. * degree, 13.3 * cm, 0. * degree, 2.04,  2.68, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"clover_B1_CUp_1", 90. * degree, 0. * degree, 13.0 * cm, 270. * degree, 2.05*mm, 2.48*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"clover_B2_CUp_2", 90. * degree, 90. * degree, 14.0 * cm, 270. * degree, 2.05*mm, 2.56*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"clover_B4_CUp_3", 125.26 * degree, 45. * degree, 12.6 * cm, 90. * degree, 2.07*mm,  2.57*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"clover_B5_CUp_4", 135. * degree, 90. * degree, 19.2 * cm, 90. * degree,  2.05*mm,  2.61*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"clover_B6_CDown_1", 125.26 * degree, 135. * degree, 12.6 * cm, 0. * degree, 2.04*mm,  2.68*mm, G4ThreeVector(0, 0, 0)},//this is going to give me problems, I dnt add the units of the filters
 };
 
 array<DetectorPosition, 3> cebr_positions{
    // DetectorPosition{"cebr_B_Sci_05", 90. * degree, 27.5 * degree, 8. * inch, 0., filterCuThinThickness, filterPbThinThickness, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"cebr_C_Sci_06", 90. * degree, 45. * degree, 7.5 * cm , 0., 2.0 *mm, 2.5*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"cebr_C_Sci_06", 90. * degree, 45. * degree, 10.5 * cm , 0., 2.0 *mm, 2.5*mm, G4ThreeVector(0, 0, 0)},
    // DetectorPosition{"cebr_D_Sci_07", 90. * degree, 62.5 * degree, 8. * inch, 0., filterCuThinThickness, filterPbThinThickness, G4ThreeVector(0, 0, 0)},
    // DetectorPosition{"cebr_F_Sci_08", 90. * degree, 117.5 * degree, 8. * inch, 0., filterCuThinThickness, filterPbThinThickness, G4ThreeVector(0, 0, 0)},
-    DetectorPosition{"cebr_G_Sci_09", 90. * degree, 135. * degree, 9.5 * cm, 0., 2.0*mm, 2.5*mm, G4ThreeVector(0, 0, 0)},
+    DetectorPosition{"cebr_G_Sci_09", 90. * degree, 135. * degree, 10.5 * cm, 0., 2.0*mm, 2.5*mm, G4ThreeVector(0, 0, 0)},
   //  DetectorPosition{"cebr_H_Sci_10", 90. * degree, 152.5 * degree, 8. * inch, 0., filterCuThinThickness, filterPbThinThickness, G4ThreeVector(0, 0, 0)},
    // DetectorPosition{"cebr_K_Sci_11", 90. * degree, 225. * degree, 8. * inch, 0., filterCuThinThickness, filterPbThinThickness, G4ThreeVector(0, 0, 0)},
     DetectorPosition{"cebr_O_Sci_12", 90. * degree, 315. * degree, 10.5 * cm, 0., 2.0*mm, 2.5*mm, G4ThreeVector(0, 0, 0)},

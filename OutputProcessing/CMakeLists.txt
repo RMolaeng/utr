@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 # Project name
+
 project(OutputProcessing LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -8,9 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+find_package(ROOT REQUIRED RIO Net Hist Tree MathCore ROOTDataFrame)
+#find_package(ROOT REQUIRED RDataFrame)
 
 # Finding ROOT
- find_package(ROOT 6.20 CONFIG REQUIRED)
+ #find_package(ROOT 6.20 CONFIG REQUIRED)
 
 
 # Adding an executable program
@@ -20,8 +23,8 @@ add_executable(
 )
 
 #add_executable(
-#    getHistogram-Eventwise
-#    GetHistogram-Eventwise.cpp
+ # getHistogram-Eventwise
+ # GetHistogram-Eventwise.cpp
 #)
 
 add_executable(
@@ -44,10 +47,10 @@ add_executable(
     RootToTxt.cpp
 )
 
-# add_executable(
-#     getHistogramRDF
-#     getHistogramRDF.cpp
-# )
+ #add_executable(
+  #   getHistogramRDF
+  #   getHistogramRDF.cpp
+ #)
 
 # Linking to libraries
 target_link_libraries(
@@ -60,15 +63,18 @@ target_link_libraries(
     ROOT::Hist)
 
 #target_link_libraries(
-#    getHistogram-Eventwise
-#    PUBLIC
-#    Threads::Threads
-#    ROOT::Core
-#    ROOT::Tree
-#    ROOT::Hist
-#    #ROOT::ROOTDataFrame
-#   /home/refilwemolaeng/Software/root/v6-20-00_Binaries/lib/libROOTDataFrame.so
-#   /home/refilwemolaeng/Software/root/v6-20-00_Binaries/lib/libTreePlayer.so)
+  # getHistogram-Eventwise
+  # PUBLIC
+  # Threads::Threads
+  # ROOT::Core
+  # ROOT::Tree
+  # ROOT::TreePlayer #Added by Refilwe
+  # ROOT::Hist
+  # ROOT::ROOTDataFrame #uncommenetd by Refilwe 
+  # ROOT::RIO
+  #/home/refilwemolaeng/Software/root/v6-20-00_Binaries/lib/libROOTDataFrame.so
+  # /home/refilwemolaeng/Software/root/v6-20-00_Binaries/lib/libTreePlayer.so
+  #)
 
 
 target_link_libraries(
@@ -102,14 +108,15 @@ target_link_libraries(
     ROOT::Tree
     ROOT::Hist)
 
-# target_link_libraries(
-#     getHistogramRDF
-#     PUBLIC
-#     Threads::Threads
-#     ROOT::Core
-#     ROOT::Tree
-#     ROOT::Hist
-#     ROOT::ROOTDataFrame)
+ #target_link_libraries(
+ #    getHistogramRDF
+ #    PUBLIC
+ #   Threads::Threads
+ #    ROOT::Core
+ #    ROOT::Tree
+ #    ROOT::Hist
+ #    ROOT::ROOTDataFrame
+ #    ROOT::RIO)
 
 set(common_compile_options
     -Wall -Wshadow -Wnon-virtual-dtor

@@ -1,0 +1,19 @@
+/run/initialize
+
+# Define the particle type and properties
+/gps/particle ion
+/gps/ion 27 60 0 0  # Define Co-60 nucleus
+
+/gps/pos/type Point
+/gps/pos/centre 0. 0. 0. mm
+
+/gps/ang/type iso
+
+
+# Set the output filename
+/utr/setUseFilenameID False
+/utr/appendZerosToVar E 2 5.1
+/utr/setFilename Efficiency_Co60
+
+# Execute the simulation
+/run/beamOn 100000000

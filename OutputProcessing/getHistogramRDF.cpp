@@ -1,14 +1,49 @@
 #include <chrono>
+#include <string>
+#include <vector>
+
+
+#include <argp.h>
+#include <dirent.h>
+#include <iostream>
+#include <sstream>
+#include <stdlib.h>
+
+
+#include <ROOT/RDataFrame.hxx>
+#include <TChain.h>
+#include <TFile.h>
+#include <TH1.h>
+#include <TROOT.h>
+#include <TSystemDirectory.h>
+//#include <ROOT/RDF/RLoopManager.hxx>
+#include <ROOT/RDF/RInterface.hxx>
+//#include <ROOT/LoopManager.h>
+
+// #include <ROOT/RFile.hxx>
+
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::string;
+using std::stringstream;
+using std::vector;
+using ROOT::RDF::RResultPtr;
+//using ROOT::RDF::RLoopManager;
+using ROOT::RDF::RDFDescription;
+using ROOT::RDF::RInterface;
 
 using std::chrono::duration;
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
-
+//ROOT::EnableImplicitMT();
 void getHistogramRDF(
-    string directory = ".",
-    string outputfilename = "hist.root",
-    vector<string> filename_identifiers = {"utr", ".root"},
-    vector<string> conditions = {
+    //std::string directory = "/home/refilwemolaeng/Geant4/utr/OutputProcessing",
+    std::string directory = ".",
+
+    std::string outputfilename = "hist.root",
+    std::vector<std::string> filename_identifiers = {"utr", ".root"},
+    std::vector<std::string> conditions = {
         "volume==0",
         "volume==1",
         "volume==2",
@@ -38,7 +73,7 @@ void getHistogramRDF(
         "volume==26",
         "volume==27",
     },
-    vector<string> histogramnames = {
+std::vector<std::string> histogramnames = {
         "det0",
         "det1",
         "det2",
@@ -68,16 +103,16 @@ void getHistogramRDF(
         "det26",
         "det27",
     },
-    string general_condition = "true", double xlow = 0.0005, double xup = 10.0005, unsigned int nbins = 10000, string tree = "utr") {
+    std::string general_condition = "true", double xlow = 0.0005, double xup = 10.0005, unsigned int nbins = 10000, std::string tree = "utr") {
 
   high_resolution_clock::time_point t_start = high_resolution_clock::now();
 
   if (conditions.size() != histogramnames.size()) {
-    cout << "> Error: Number of conditions and histogram names do not match. Aborting ..." << endl;
+    cout << "> Error: Number of conditions and histogram names do not match. Aborting ..." <<endl;
     abort();
   }
 
-  ROOT::EnableImplicitMT();
+  ROOT::EnableImplicitMT(3);
 
   cout << "> Looking for files whose names contain the strings ";
   for (auto fid : filename_identifiers) {

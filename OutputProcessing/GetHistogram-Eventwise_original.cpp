@@ -26,13 +26,19 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
+#include <ROOT/RDataFrame.hxx>
+#include <ROOT/RDFHelpers.hxx>
+#include <ROOT/RDF/RDFDescription.hxx>
+#include <ROOT/RDF/RInterface.hxx>
+#include <ROOT/RDF/RLoopManager.hxx>
+#include <ROOT/RResultPtr.hxx>//REFILWE ADDED THIS LINE
 #include <TCanvas.h>
 #include <TChain.h>
 #include <TFile.h>
 #include <TH1.h>
 #include <TROOT.h>
 #include <TSystemDirectory.h>
-
+// #include <ROOT/RFile.hxx>
 
 using std::cerr;
 using std::cout;
@@ -40,7 +46,10 @@ using std::endl;
 using std::string;
 using std::stringstream;
 using std::vector;
-
+using ROOT::RDF::RResultPtr;
+//using ROOT::RDF::RLoopManager;
+using ROOT::RDF::RDFDescription;
+using ROOT::RDF::RInterface;
 
 // Program documentation.
 static char doc[] = "Create histograms of energy depositions in detectors from a list of events stored among multiple ROOT files";
@@ -68,7 +77,7 @@ static struct argp_option options[] = {
 
 // Used by main to communicate with parse_opt
 struct arguments {
-  string tree = "utr";
+  string tree = "edep";
   string p1 = "utr";
   string p2 = ".root";
   string inputDir = ".";
@@ -236,13 +245,11 @@ int main(int argc, char *argv[]) {
     ROOT::EnableImplicitMT(arguments.threads);
   }
 
-  //auto df = ROOT::RDataFrame(fileChain); REfilwe commenetd out
+  auto df = ROOT::RDataFrame(fileChain); 
 
 
-  //vector<ROOT::RDF::RResultPtr<TH1D>> histPtr(arguments.nhistograms);REfilwe Commented out
-  //stringstream histname, histtitle; REfilwe Commneted out
 
-  vector<TH1 *> hist(arguments.nhistograms + 1); // +1 For sum histogram
+  vector<ROOT::RDF::RResultPtr<TH1D>> histPtr(arguments.nhistograms);
   stringstream histname, histtitle;
 
   for (unsigned int i = 0; i < arguments.nhistograms; ++i) {
@@ -255,38 +262,12 @@ int main(int argc, char *argv[]) {
     // Hence a TH1D is used: The Double datatype has a precision of about 14 digits (more digits than an Integer can store), and the incrementation by one gets lost at
     // a bin content of about 9.0e+15, which should suffice for all (utr) cases (one could also implement throwing an exception if a bin passes some threshold after filling).
 
-   /* histPtr[i] = df
+    histPtr[i] = df
                      .Filter([](double e) { return e > 0.; }, {"det" + std::to_string(i)})
                      .Histo1D(TH1D(histname.str().c_str(), histtitle.str().c_str(), nbins, emin, eMax), "det" + std::to_string(i));
     histname.str("");
-    histtitle.str("");*/ //REfilwe Commented out
-
-     hist[i] = new TH1D(histname.str().c_str(), histtitle.str().c_str(), nbins, emin, eMax);
-    histname.str("");
-    histtitle.str(""); 
+    histtitle.str("");
   }
-  hist[arguments.nhistograms] = new TH1D("sum", "Sum spectrum of all detectors", nbins, emin, eMax);
-  vector<unsigned int> multiplicity_counter(arguments.nhistograms, 0);
-
-   // Fill histogram from TBranch in TChain with user-defined conditions
-  // Define variables and automatically update their values from the ROOT tree using the GetEntry method after registering them with the SetBranchAddress method
-  double Event, lastEvent;
-  double Volume; // Needs to be double to correctly work with GetEntry and SetBranchAddress methods
-  unsigned int lastVolume; // Needs to be unsigned int to correctly work with array indices
-  double Edep;
-  vector<double> EdepBuffer(arguments.nhistograms, 0.);
-
-   fileChain.SetBranchAddress("edep", &Edep);
-  fileChain.SetBranchAddress("volume", &Volume);
-  if (arguments.addback) {
-    fileChain.SetBranchAddress("event", &Event);
-  } else {
-    Event = -1; // If addback is disabled, Event will not be relevant in the code below, and the ROOT tree is not required to contain it
-  }
-
-  unsigned int addback_counter = 0;
-  unsigned int warningCounter = 0;
-
 
   if (arguments.addback >= 0) {
     int clover = 1;

@@ -82,6 +82,7 @@ void HPGe_Clover::Construct(G4ThreeVector global_coordinates, G4double theta, G4
   G4SubtractionSolid *crystal_step2_solid = new G4SubtractionSolid(detector_name + "_crystal_step2_solid", crystal_step1_solid, subtraction_solid, 0, G4ThreeVector(-properties.crystal_radius - 22. * mm, 0., 0.));
   G4SubtractionSolid *crystal_step3_solid = new G4SubtractionSolid(detector_name + "_crystal_step3_solid", crystal_step2_solid, subtraction_solid, 0, G4ThreeVector(0., -properties.crystal_radius - 22. * mm, 0.));
   G4SubtractionSolid *crystal_step4_solid = new G4SubtractionSolid(detector_name + "_crystal_step4_solid", crystal_step3_solid, subtraction_solid, 0, G4ThreeVector(0., properties.crystal_radius + 23. * mm, 0.));
+   std::cout << "Crystal Radius: " << properties.crystal_radius << std::endl;
 
   G4LogicalVolume *crystal1_logical = new G4LogicalVolume(crystal_step4_solid, nist->FindOrBuildMaterial("G4_Ge"), detector_name + "_1");
   crystal1_logical->SetVisAttributes(new G4VisAttributes(G4Color::Blue()));

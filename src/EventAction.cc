@@ -47,10 +47,25 @@ void EventAction::EndOfEventAction(const G4Event *event) {
 #else
     G4RunManager *runManager = G4RunManager::GetRunManager();
 #endif
-    int NbEvents = runManager->GetNumberOfEventsToBeProcessed();
+
+   // G4RunManager *runManager = G4RunManager::GetRunManager();
+
+   int NbEvents = runManager->GetNumberOfEventsToBeProcessed();
     int threadID = G4Threading::G4GetThreadId();
     int numberofpadchars = to_string(n_threads - 1).length() - to_string(threadID).length();
     string padchars(numberofpadchars, ' ');
+
+/******************************************
+#ifdef G4MULTITHREADED
+    int threadID = G4Threading::G4GetThreadId(); // Get thread ID in multithreaded mode
+    int numberofpadchars = to_string(n_threads - 1).length() - to_string(threadID).length();
+    string padchars(numberofpadchars, ' ');
+#else
+    // In single-threaded mode, there's no need to worry about thread IDs or padding
+    string padchars = ""; // No padding needed in single-threaded mode
+#endif
+*****************************************/
+
     auto elapsedSeconds = (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - StartRunTime)).count();
     int days = elapsedSeconds / (24 * 3600);
     int hours = (elapsedSeconds - days * (24 * 3600)) / 3600;

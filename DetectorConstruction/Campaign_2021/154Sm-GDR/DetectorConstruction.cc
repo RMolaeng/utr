@@ -26,6 +26,11 @@ along with utr.  If not, see <http://www.gnu.org/licenses/>.
 #include "G4SystemOfUnits.hh"
 #include "G4ios.hh"
 
+//Just added for source
+#include "G4Sphere.hh"
+#include "G4Colour.hh"
+#include "G4SystemOfUnits.hh"
+
 // Materials
 #include "G4NistManager.hh"
 #include "Materials.hh"
@@ -635,6 +640,30 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
     throw std::exception();
   }
 
+
+    /***************** Source Volume-04 Sep 2024-Refilwe Added *****************/
+    G4double source_rmin = 0. * mm;
+    G4double source_rmax = 1.0 * mm;
+
+    G4Sphere* source_Solid = new G4Sphere("source_Solid", source_rmin, source_rmax, 0., twopi, 0., pi);
+
+    G4Material* vacuum = G4Material::GetMaterial("G4_Galactic"); // Assuming vacuum is defined as G4_Galactic in your material definitions.
+    
+    G4LogicalVolume* source_Logical = new G4LogicalVolume(source_Solid, vacuum, "source_Logical");
+    
+    // Set visualization attributes
+     auto sourceVis = G4VisAttributes(yellow);
+     sourceVis.SetForceWireframe(true);
+     source_Logical->SetVisAttributes(sourceVis);
+
+    //G4VisAttributes* yellow = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0)); // Yellow color
+    //yellow->SetVisibility(true);
+    //source_Logical->SetVisAttributes(yellow);
+
+    new G4PVPlacement(0, G4ThreeVector(), source_Logical, "source", worldLogical, false, 0);
+    /*************************************************************/
+
+
   return worldPhysical;
 }
 
@@ -643,7 +672,7 @@ void DetectorConstruction::ConstructSDandField() {
   for (auto det_pos : labr_positions) {
     detIDNo++;
     auto detName = det_pos.id;
-    EnergyDepositionSD *sensitiveDet = new EnergyDepositionSD(detName, detName);
+    ParticleSD *sensitiveDet = new ParticleSD(detName, detName);
     G4SDManager::GetSDMpointer()->AddNewDetector(sensitiveDet);
     sensitiveDet->SetDetectorID(detIDNo);
     SetSensitiveDetector(detName, sensitiveDet, true);
@@ -651,7 +680,7 @@ void DetectorConstruction::ConstructSDandField() {
   for (auto det_pos : cebr_positions) {
     detIDNo++;
     auto detName = det_pos.id;
-    EnergyDepositionSD *sensitiveDet = new EnergyDepositionSD(detName, detName);
+    ParticleSD *sensitiveDet = new ParticleSD(detName, detName);
     G4SDManager::GetSDMpointer()->AddNewDetector(sensitiveDet);
     sensitiveDet->SetDetectorID(detIDNo);
     SetSensitiveDetector(detName, sensitiveDet, true);
@@ -660,7 +689,7 @@ void DetectorConstruction::ConstructSDandField() {
     for (int subCrystalNo = 1; subCrystalNo < 5; subCrystalNo++) {
       detIDNo++;
       auto detName = det_pos.id + "_" + std::to_string(subCrystalNo);
-      EnergyDepositionSD *sensitiveDet = new EnergyDepositionSD(detName, detName);
+      ParticleSD *sensitiveDet = new ParticleSD(detName, detName);
       G4SDManager::GetSDMpointer()->AddNewDetector(sensitiveDet);
       sensitiveDet->SetDetectorID(detIDNo);
       SetSensitiveDetector(detName, sensitiveDet, true);
@@ -669,7 +698,7 @@ void DetectorConstruction::ConstructSDandField() {
   Max_Sensitive_Detector_ID = detIDNo; // Necessary for EVENT_EVENTWISE output mode
 
 #ifdef USE_ZERODEGREE
-  EnergyDepositionSD *ZeroDegreeSD = new EnergyDepositionSD("ZeroDegree", "ZeroDegree");
+  ParticleSD *ZeroDegreeSD = new ParticleSD("ZeroDegree", "ZeroDegree");
   G4SDManager::GetSDMpointer()->AddNewDetector(ZeroDegreeSD);
   ZeroDegreeSD->SetDetectorID(0);
   SetSensitiveDetector("ZeroDegree", ZeroDegreeSD, true);

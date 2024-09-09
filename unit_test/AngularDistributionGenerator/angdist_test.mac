@@ -1,6 +1,7 @@
 /run/initialize
-
 /ang/particle geantino
+#/ang/particle gamma
+/ang/energy 3.0 MeV  
 
 /ang/nstates 3
 /ang/state1 0.
@@ -14,11 +15,14 @@
 /ang/sourceY 0. mm
 /ang/sourceZ 0. mm
 
-/ang/sourceDX 1. mm
-/ang/sourceDY 1. mm
-/ang/sourceDZ 1. mm
+/ang/sourceDX 1.0 mm
+/ang/sourceDY 1.0 mm
+/ang/sourceDZ 1.0 mm
 
 /ang/sourcePV source
+/ang/polarized true
 
-/run/printProgress 100000
-/run/beamOn 10000000
+/utr/setFilename AngularDist_Geanito_0_1_0
+
+#/run/printProgress 100000
+/run/beamOn 1000000

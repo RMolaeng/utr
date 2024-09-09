@@ -111,6 +111,7 @@ int main(int argc, char *argv[]) {
   G4RunManager *runManager = new G4RunManager;
 #endif
 
+  //G4RunManager *runManager = new G4RunManager;
   G4cout << "Initializing DetectorConstruction..." << G4endl;
   runManager->SetUserInitialization(new DetectorConstruction);
 
@@ -161,7 +162,7 @@ int main(int argc, char *argv[]) {
   if (G4VisManager::GetConcreteInstance())
     delete G4VisManager::GetConcreteInstance();
 
-  utrFilenameTools::deleteMasterFilename();
+  //utrFilenameTools::deleteMasterFilename(); //commented out on the 6-sep-2024-Refilwe
 
   delete runManager;
   return 0;

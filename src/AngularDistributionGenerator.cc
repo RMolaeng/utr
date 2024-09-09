@@ -142,7 +142,7 @@ void AngularDistributionGenerator::check_momentum_generator() {
   G4double random_w;
   G4int momentum_success = 0;
   unsigned int max_w_overflow_counter = 0;
-  G4double occurred_max_w = -1.;
+    G4double occurred_max_w = 1.;
   double p_max_w = 0.;
 
   G4cout << "========================================================================" << G4endl;

@@ -83,25 +83,25 @@ bool utrFilenameTools::setOutputDir(string odir) {
 
 string utrFilenameTools::getMasterFilename() {
   if (masterFilename == "") {
-    char tmpfilename[L_tmpnam]; // Char array of L_tmpnam size as requested by tmpnam
-    if (NULL == std::tmpnam(tmpfilename)) { // Let tmpnam create a not yet used filename and store it in the tmpfilename char array
-      G4cerr << "ERROR: Could not obtain a free temporary filename for the master thread's output! tmpnam failed! Aborting..." << G4endl;
-      throw std::exception();
+    char tmpfilename[] = "/tmp/utrXXXXXX";  // Template for mkstemp, must end with "XXXXXX"
+    int fd = mkstemp(tmpfilename); // mkstemp returns a file descriptor (fd), also replaces the Xs
+    if (fd == -1) {
+      G4cerr << "ERROR: Could not obtain a free temporary filename for the master thread's output! mkstemp failed! Aborting..." << G4endl;
+      throw std::runtime_error("Failed to create a temporary filename.");
     }
+    close(fd); // Close the file descriptor as we don't need it open
+
     stringstream rootFilename;
-    rootFilename << tmpfilename << ".root"; // Geant4 forces a .root extension to the filename
+    rootFilename << tmpfilename << ".root"; // Append the .root extension
+
     G4FileUtilities fileutil;
-    if (fileutil.FileExists(rootFilename.str())) { // Hence manually check if the tmpnam filename with a .root extension is also non-existing, if not abort
-      G4cerr << "ERROR: Could not obtain a free temporary filename for the master thread's output! Tried: '" << rootFilename.str() << "' but it is already exists! Aborting..." << G4endl;
-      throw std::exception();
+    if (fileutil.FileExists(rootFilename.str())) {
+      G4cerr << "ERROR: Could not obtain a free temporary filename for the master thread's output! Tried: '" << rootFilename.str() << "' but it already exists! Aborting..." << G4endl;
+      throw std::runtime_error("Temporary file name already exists.");
     }
     masterFilename = rootFilename.str(); // Remember this free filename
   }
   return masterFilename;
 }
 
-void utrFilenameTools::deleteMasterFilename() {
-  if (masterFilename != "") {
-    std::remove(masterFilename.c_str());
-  }
-}
+

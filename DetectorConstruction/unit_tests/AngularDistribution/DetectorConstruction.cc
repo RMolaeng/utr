@@ -78,16 +78,17 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
 
   G4double world_r = 7000. * mm;
 
-  G4Sphere *world_dim =
-      new G4Sphere("world_dim", 0., world_r, 0., twopi, 0., pi);
+  G4Sphere *world_dim = new G4Sphere("world_dim", 0., world_r, 0., twopi, 0., pi);
 
-  G4LogicalVolume *world_log =
-      new G4LogicalVolume(world_dim, vacuum, "world_log", 0, 0, 0);
+  G4LogicalVolume *world_log = new G4LogicalVolume(world_dim, vacuum, "world_log", 0, 0, 0);
 
-  // world_log->SetVisAttributes(G4VisAttributes::GetInvisible());
+  world_log->SetVisAttributes(G4VisAttributes::GetInvisible());
+  // Set transparency (1.0 is fully transparent, 0.0 is fully opaque)
+   //G4VisAttributes *worldVisAttr = new G4VisAttributes(G4Colour(1.0, 1.0, 1.0, 0.2)); // 20% opacity
+   //world_log->SetVisAttributes(worldVisAttr);
 
-  G4VPhysicalVolume *world_phys =
-      new G4PVPlacement(0, G4ThreeVector(), world_log, "world", 0, false, 0);
+  G4VPhysicalVolume *world_phys = new G4PVPlacement(0, G4ThreeVector(), world_log, "world", 0, false, 0);
+
 
   /***************** Source Volume *****************/
 

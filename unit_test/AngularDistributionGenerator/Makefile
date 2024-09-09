@@ -2,20 +2,20 @@ CPP=g++
 SRC_DIR=../../src
 INCLUDE_DIR=../../include
 CFLAGS=-Wall -Wconversion -Wsign-conversion -O3 -I$(INCLUDE_DIR)
-ROOTFLAGS=-isystem$(shell root-config --incdir) -L$(shell root-config --libdir) -lCore -lRIO -lHist -lTree
+ROOTFLAGS=-isystem$(shell root-config --incdir) -L$(shell root-config --libdir) -lCore -lRIO -lHist -lTree -lMathCore -lVc
 
 all: angdisttest
 
 AngularDistribution.o: $(SRC_DIR)/AngularDistribution.cc $(INCLUDE_DIR)/AngularDistribution.hh
 	$(CPP) -c -o $@ $< $(CFLAGS)
 
-angdisttest: AngularDistribution.o AngularDistributionGenerator_Test.cpp
+angdisttest: AngularDistribution.o AngularDistributionGenerator.cpp
 	$(CPP) -o $@ $^ $(CFLAGS) $(ROOTFLAGS)
 	cp $@ ../../
 
 .PHONY: all clean
 
 clean:
-	rm angdisttest
-	rm AngularDistribution.o
-	rm ../../angdisttest
+	rm -f angdisttest
+	rm -f AngularDistribution.o
+	rm -f ../../angdisttest

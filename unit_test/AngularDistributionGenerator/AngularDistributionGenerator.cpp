@@ -88,8 +88,8 @@ class W_Function {
     nstates = 3;
 
     states[0] = 0.;
-    states[1] = 1.;
-    states[2] = 0.;
+    states[1] = -1.;
+    states[2] = 2.;
 
     for (int i = 0; i < 4; ++i)
       alt_states[i] = states[i];
@@ -172,6 +172,38 @@ int main(int argc, char *argv[]) {
   Double_t theta_low = 0.;
   Double_t theta_up = pi;
 
+  //////////////////Define my clovers for addback//////////////////////
+  int  nClover = 5;
+  int clo_id[5][4];
+  std::vector<double> clov_energy(static_cast<size_t>(nClover), 0.0);
+ 
+  clo_id[0][0] = 8;
+	clo_id[0][1] = 9;
+	clo_id[0][2] = 10;
+	clo_id[0][3] = 11;
+	
+	clo_id[1][0] = 12;
+	clo_id[1][1] = 13;
+	clo_id[1][2] = 14;
+	clo_id[1][3] = 15;
+
+	clo_id[2][0] = 16;
+	clo_id[2][1] = 17;
+	clo_id[2][2] = 18;
+	clo_id[2][3] = 19;
+	
+	clo_id[3][0] = 20;
+	clo_id[3][1] = 21;
+	clo_id[3][2] = 22;
+	clo_id[3][3] = 23;
+	
+	clo_id[4][0] = 24;
+	clo_id[4][1] = 25;
+	clo_id[4][2] = 26;
+	clo_id[4][3] = 27;
+
+  ////////////////////////////////////////////////////////////////////
+
 
 
   // Declare the histograms vector
@@ -182,11 +214,11 @@ int main(int argc, char *argv[]) {
         histograms.push_back(new  TH2F(Form("hist%d", i), Form("Momentum distribution in (theta, phi) ID %d", i), nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up));
     }
     cloverHistograms.resize(5); // Resize the vector to hold nClover elements
-    cloverHistograms[0] = new TH1D("ang_s1","S1: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
-    cloverHistograms[1] = new TH1D("ang_s2","S2: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
-    cloverHistograms[2] = new TH1D("ang_s3","S3: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
-    cloverHistograms[3] = new TH1D("ang_s4","S4: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
-    cloverHistograms[4] = new TH1D("ang_s5","S5: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
+    cloverHistograms[0] = new TH2F("ang_s1","S1: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
+    cloverHistograms[1] = new TH2F("ang_s2","S2: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
+    cloverHistograms[2] = new TH2F("ang_s3","S3: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
+    cloverHistograms[3] = new TH2F("ang_s4","S4: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
+    cloverHistograms[4] = new TH2F("ang_s5","S5: angular_dist", nbins_theta, theta_low, theta_up, nbins_phi, phi_low, phi_up);
 
   // Fill histogram from TBranch in TChain with user-defined conditions
   // Define variables and read their values from the tree using the GetEntry() method
@@ -221,8 +253,15 @@ int main(int argc, char *argv[]) {
 
 
       if (detector_id >= 0 && static_cast<size_t>(detector_id) < histograms.size()) {
-        histograms[static_cast<std::vector<TH1D*>::size_type>(detector_id)]->Fill(theta, phi);
+        histograms[static_cast<std::vector<TH2F*>::size_type>(detector_id)]->Fill(theta, phi);
     }
+
+      for (int n=0; n<nClover; ++n){
+         for (int m=0; m<4; ++m){
+            if (detector_id == clo_id[n][m]){
+          cloverHistograms[static_cast<size_t>(n)]->Fill(theta, phi);
+          }
+      }}
   }
 
   // Create output ROOT file and write histograms
@@ -230,6 +269,10 @@ int main(int argc, char *argv[]) {
     for (auto &hist : histograms) {
         hist->Write();
     }
+
+    for (size_t i = 0; i < cloverHistograms.size(); ++i) {
+        cloverHistograms[i]->Write();
+    } 
     of->Close();
 
     std::cout << "> Created output file " << args.outputfilename << std::endl;

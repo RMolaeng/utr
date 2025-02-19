@@ -90,7 +90,8 @@ const auto filterPbThickThickness = 2.562 * mm; // Aka 2.5mm Pb filter*/
 array<DetectorPosition, 4> labr_positions{
     DetectorPosition{"labr_L1_Sci_01", 135. * degree, 218.57 * degree, 8.5* cm, 0, 2.06*mm, 2.55*mm, G4ThreeVector(0, 0, 0)},
     DetectorPosition{"labr_L3_Sci_02", 135. * degree, 321.43 * degree, 8.5* cm, 0, 2.03*mm,  2.58*mm, G4ThreeVector(0, 0, 0)},//check if the same problem is here
-    DetectorPosition{"labr_L5_Sci_03", 90. * degree, 180. * degree, 7.5 * cm , 0, 2.03*mm, 2.51*mm, G4ThreeVector(0, 0, 0)},//looks like there is a coordinate system issue here
+   // DetectorPosition{"labr_L5_Sci_03", 90. * degree, 180. * degree, 7.5 * cm , 0, 2.03*mm, 2.51*mm, G4ThreeVector(0, 0, 0)},//looks like there is a coordinate system issue here
+    DetectorPosition{"labr_L5_Sci_03", 90. * degree, 180. * degree, 14.0 * cm , 0, 2.03*mm, 2.51*mm, G4ThreeVector(0, 0, 0)},
     DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 8.5 * cm , 0, 2.03*mm,  2.51*mm, G4ThreeVector(0, 0, 0)},
     //DetectorPosition{"labr_L7_Sci_04", 90. * degree, 270. * degree, 1. * inch + 40.0 * mm, 0, 2 * filterCuThickThickness, 2 * filterPbThickThickness, G4ThreeVector(0, 0, 0)},
 };
@@ -217,7 +218,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   const auto collimatorRoomCollimatorLength = 6. * inch; // From Mark Emamian's collimator inventory list
   const auto collimatorRoomCollimatorWidth = 2.5 * inch; // From Mark Emamian's collimator inventory list
   const auto collimatorRoomCollimatorHeight = 2.5 * inch; // From Mark Emamian's collimator inventory list
-  const auto collimatorRoomCollimatorAperture = 8. * mm;
+  const auto collimatorRoomCollimatorAperture = 9. * mm; 
 
   const auto collimatorRoomCutoffPoint = collimatorRoomCollimatorToTargetPos + collimatorRoomCollimatorLength + 100. * mm; // Just some extra space
 
@@ -245,8 +246,8 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
   const auto activationTargetHolderToBeamLine = activationTargetHolderGrooveDiameter / 2. - activationTargetHolderGrooveDepth;
 
   const auto zeroDegreeToTargetPos = 9. * feet; // From ELOG https://elog.ikp.physik.tu-darmstadt.de/clovershare/800
-  const auto zeroDegreeYOffset = zerodegree_offset * mm; // 23. * mm; // From ELOG https://elog.ikp.physik.tu-darmstadt.de/clovershare/2027
-
+  //const auto zeroDegreeYOffset = zerodegree_offset * mm; // 23. * mm; // From ELOG https://elog.ikp.physik.tu-darmstadt.de/clovershare/2027
+  const auto zeroDegreeYOffset = 18 * mm;
   // --------------- Filter holder ---------------
   // Filter holder material: PLA (Polylactic Acid, density "1.5297 g/cm3", Wikipedia: density 1.210 to 1.430 g/cm3)
   // Filter holder hole radius: 47mm
@@ -659,8 +660,10 @@ G4VPhysicalVolume *DetectorConstruction::Construct() {
     //G4VisAttributes* yellow = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0)); // Yellow color
     //yellow->SetVisibility(true);
     //source_Logical->SetVisAttributes(yellow);
-
-    new G4PVPlacement(0, G4ThreeVector(), source_Logical, "source", worldLogical, false, 0);
+    //new G4PVPlacement(0, G4ThreeVector(), source_Logical, "source", worldLogical, false, 0);
+   // new G4PVPlacement(0, G4ThreeVector(0., 0., 2.4132  * m), source_Logical, "source", worldLogical, false, 0);
+   //   new G4PVPlacement(0, G4ThreeVector(0., 0., 2.7432 * m), source_Logical, "source", worldLogical, false, 0);
+    
     /*************************************************************/
 
 
@@ -672,7 +675,7 @@ void DetectorConstruction::ConstructSDandField() {
   for (auto det_pos : labr_positions) {
     detIDNo++;
     auto detName = det_pos.id;
-    ParticleSD *sensitiveDet = new ParticleSD(detName, detName);
+    EnergyDepositionSD *sensitiveDet = new EnergyDepositionSD(detName, detName);
     G4SDManager::GetSDMpointer()->AddNewDetector(sensitiveDet);
     sensitiveDet->SetDetectorID(detIDNo);
     SetSensitiveDetector(detName, sensitiveDet, true);
@@ -680,7 +683,7 @@ void DetectorConstruction::ConstructSDandField() {
   for (auto det_pos : cebr_positions) {
     detIDNo++;
     auto detName = det_pos.id;
-    ParticleSD *sensitiveDet = new ParticleSD(detName, detName);
+    EnergyDepositionSD *sensitiveDet = new EnergyDepositionSD(detName, detName);
     G4SDManager::GetSDMpointer()->AddNewDetector(sensitiveDet);
     sensitiveDet->SetDetectorID(detIDNo);
     SetSensitiveDetector(detName, sensitiveDet, true);
@@ -689,7 +692,7 @@ void DetectorConstruction::ConstructSDandField() {
     for (int subCrystalNo = 1; subCrystalNo < 5; subCrystalNo++) {
       detIDNo++;
       auto detName = det_pos.id + "_" + std::to_string(subCrystalNo);
-      ParticleSD *sensitiveDet = new ParticleSD(detName, detName);
+      EnergyDepositionSD *sensitiveDet = new EnergyDepositionSD(detName, detName);
       G4SDManager::GetSDMpointer()->AddNewDetector(sensitiveDet);
       sensitiveDet->SetDetectorID(detIDNo);
       SetSensitiveDetector(detName, sensitiveDet, true);
@@ -698,7 +701,7 @@ void DetectorConstruction::ConstructSDandField() {
   Max_Sensitive_Detector_ID = detIDNo; // Necessary for EVENT_EVENTWISE output mode
 
 #ifdef USE_ZERODEGREE
-  ParticleSD *ZeroDegreeSD = new ParticleSD("ZeroDegree", "ZeroDegree");
+  EnergyDepositionSD *ZeroDegreeSD = new EnergyDepositionSD("ZeroDegree", "ZeroDegree");
   G4SDManager::GetSDMpointer()->AddNewDetector(ZeroDegreeSD);
   ZeroDegreeSD->SetDetectorID(0);
   SetSensitiveDetector("ZeroDegree", ZeroDegreeSD, true);

@@ -107,7 +107,8 @@ void AngularDistributionGenerator::GeneratePrimaries(G4Event *anEvent) {
   }
 
   for (int i = 0; i < MAX_TRIES_MOMENTUM; i++) {
-    random_theta = acos(2. * G4UniformRand() - 1.);
+   // random_theta = acos(2. * G4UniformRand() - 1.);
+    random_theta = pi * G4UniformRand();
     random_phi = twopi * G4UniformRand();
     random_w = G4UniformRand() * MAX_W;
 
@@ -149,7 +150,8 @@ void AngularDistributionGenerator::check_momentum_generator() {
   G4cout << "Checking Monte-Carlo momentum generator with " << MAX_TRIES_MOMENTUM << " 3D vectors..." << G4endl;
 
   for (int i = 0; i < MAX_TRIES_MOMENTUM; i++) {
-    random_theta = acos(2. * G4UniformRand() - 1.);
+    //random_theta = acos(2. * G4UniformRand() - 1.);
+     random_theta = pi * G4UniformRand();
     random_phi = twopi * G4UniformRand();
     random_w = G4UniformRand() * MAX_W;
 

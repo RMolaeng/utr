@@ -82,10 +82,9 @@ class W_Function {
     //	START OF USER-DEFINED OUTPUT
     //
 
-    nstates = 3;
 
     states[0] = 0.;
-    states[1] = 1.;
+    states[1] = -1.;
     states[2] = 0.;
 
     for (int i = 0; i < 4; ++i)
@@ -107,7 +106,8 @@ class W_Function {
       return par[0] * sin(x[0]) * (angdist.AngDist(x[0], x[1], states, nstates, mix) + angdist.AngDist(x[0], x[1], alt_states, nstates, mix));
     }
     return par[0] * sin(x[0]) * angdist.AngDist(x[0], x[1], states, nstates, mix);
-  }
+    
+     }
 
   double states[4];
   double alt_states[4];
@@ -135,6 +135,7 @@ int main(int argc, char *argv[]) {
   cout << "> FIT          : " << args.fit << endl;
   cout << "> UNPOLARIZED  : " << args.is_unpolarized << endl;
   cout << "#############################################" << endl;
+  
 
   // Find all files in the current directory that contain pattern1 and pattern1 and connect them to a TChain
   TSystemDirectory dir(".", ".");

@@ -88,8 +88,8 @@ class W_Function {
     nstates = 3;
 
     states[0] = 0.;
-    states[1] = -1.;
-    states[2] = 2.;
+    states[1] = 1.;
+    states[2] = 0.;
 
     for (int i = 0; i < 4; ++i)
       alt_states[i] = states[i];
@@ -109,6 +109,7 @@ class W_Function {
     if (is_unpolarized) {
       return par[0] * sin(x[0]) * (angdist.AngDist(x[0], x[1], states, nstates, mix) + angdist.AngDist(x[0], x[1], alt_states, nstates, mix));
     }
+   // return par[0] * sin(x[0]) * angdist.AngDist(x[0], x[1], states, nstates, mix);
     return par[0] * sin(x[0]) * angdist.AngDist(x[0], x[1], states, nstates, mix);
   }
 
@@ -165,8 +166,8 @@ int main(int argc, char *argv[]) {
 
   // Create histogram
 
-  Int_t nbins_phi = 50;
-  Int_t nbins_theta = 50;
+  Int_t nbins_phi = 100;
+  Int_t nbins_theta = 100;
   Double_t phi_low = 0.;
   Double_t phi_up = two_pi;
   Double_t theta_low = 0.;

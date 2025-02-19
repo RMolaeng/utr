@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Initial and final energy values in MeV
-START_ENERGY=9.4
-END_ENERGY=10.0
-STEP=0.1
+START_ENERGY=0.1
+END_ENERGY=3.6
+STEP=0.5
 
 # Loop over the specified energy range
 for energy in $(seq $START_ENERGY $STEP $END_ENERGY); do
@@ -16,7 +16,7 @@ for energy in $(seq $START_ENERGY $STEP $END_ENERGY); do
 /run/initialize
 /gps/particle gamma
 /gps/pos/type Point
-/gps/pos/centre 0. 0. 0. mm
+/gps/pos/centre 0. 0.  2693.2 mm #at 5cm away
 /gps/ang/type iso
 /gps/ene/type Mono
 /gps/ene/mono ${energy} MeV
@@ -24,13 +24,14 @@ for energy in $(seq $START_ENERGY $STEP $END_ENERGY); do
 # Set the output filename to contain the simulated energy in a uniform number format and disable appendage of additional file IDs
 /utr/setUseFilenameID False
 /utr/appendZerosToVar E 2 ${energy}
-/utr/setFilename Efficiency_${energy_keV}_keV
+/utr/setFilename Efficiency_${energy_keV}_keV_Zero
 
 # Run the simulation
-/run/beamOn 100000000
+# /run/beamOn 100000000
+/run/beamOn 10000000
 EOF
   # Run the simulation with the generated macro file
-  build/utr -m  $macro_file -t 8
+  build/utr -m  $macro_file -t 6
 done
 
 

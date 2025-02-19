@@ -5,8 +5,8 @@
 
 /ang/nstates 3
 /ang/state1 0.
-/ang/state2 1.
-/ang/state3 0.
+/ang/state2 -1.
+/ang/state3 2.
 
 /ang/delta12 0.
 /ang/delta23 0.
@@ -22,7 +22,8 @@
 /ang/sourcePV source
 /ang/polarized true
 
-/utr/setFilename AngularDist_Geanito_0_1_0
+/utr/setFilename AngularDist_Geanito_0_-1_2_testD
+#/utr/setFilename  sphere_0_-1_2_
 
 #/run/printProgress 100000
 /run/beamOn 1000000
